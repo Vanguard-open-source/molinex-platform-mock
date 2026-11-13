@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ResourceAccess } from './resource-access.js';
 import { IdentityEndpoints } from './identity-endpoints.js';
+import { CommercialEndpoints } from './commercial-endpoints.js';
 import { TokenAccess } from './token-access.js';
 import { ProblemDetail } from './problem-detail.js';
 
@@ -41,6 +42,7 @@ export class MockApiServer {
         app.get('/', (_request, response) => response.json({resources: access.resources(router.db)}));
         app.get('/api/v1/health', (_request, response) => response.json({status: 'ok', time: new Date().toISOString()}));
         identity.register(app);
+        new CommercialEndpoints(router.db).register(app);
         app.use(jsonServer.rewriter({'/api/v1/*': '/$1', '/api/v1': '/'}));
         // The operational API assigns numeric IDs even when a frontend form sends id: 0.
         app.use((request, _response, next) => {
