@@ -7,6 +7,7 @@ const directoryName = path.dirname(fileURLToPath(import.meta.url));
 
 const config = new MockApiServerConfig({
     port: process.env.PORT || 3000,
+    requireToken: process.env.MOCK_REQUIRE_TOKEN === 'true',
     dbPath:
         process.env.JSON_SERVER_DB_PATH ||
         path.join(directoryName, 'db.json')

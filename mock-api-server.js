@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ResourceAccess } from './resource-access.js';
 import { IdentityEndpoints } from './identity-endpoints.js';
+import { TokenAccess } from './token-access.js';
 import { ProblemDetail } from './problem-detail.js';
 
 export class MockApiServer {
@@ -35,6 +36,7 @@ export class MockApiServer {
         app.use(jsonServer.bodyParser);
         // The explicit user-method 404 contract also applies before optional token validation.
         app.use(access.middleware(true));
+        app.use(new TokenAccess(identity, this.#config.requireToken).middleware());
         app.use(access.middleware());
         app.get('/', (_request, response) => response.json({resources: access.resources(router.db)}));
         app.get('/api/v1/health', (_request, response) => response.json({status: 'ok', time: new Date().toISOString()}));
