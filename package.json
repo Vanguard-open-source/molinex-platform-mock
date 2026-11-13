@@ -1,6 +1,6 @@
 {
   "name": "molinex-platform-mock",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Mock REST API for the Molinex web application",
   "private": true,
   "type": "module",
